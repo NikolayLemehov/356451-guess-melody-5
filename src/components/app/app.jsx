@@ -8,6 +8,7 @@ import AuthScreen from "../auth-screen/auth-screen";
 import GameOverScreen from "../game-over-screen/game-over-screen";
 import WinScreen from "../win-screen/win-screen";
 import GameScreen from "../game-screen/game-screen";
+import {genrePropTypes, artistPropTypes} from "../../prop-types";
 
 const App = (props) => {
   const {errorsCount, questions} = props;
@@ -38,13 +39,13 @@ const App = (props) => {
           />
         </Route>
         <Route exact path="/login">
-          <AuthScreen />
+          <AuthScreen/>
         </Route>
         <Route exact path="/result">
-          <WinScreen />
+          <WinScreen/>
         </Route>
         <Route exact path="/lose">
-          <GameOverScreen />
+          <GameOverScreen/>
         </Route>
         <Route exact path="/game">
           <GameScreen
@@ -59,7 +60,7 @@ const App = (props) => {
 
 App.propTypes = {
   errorsCount: PropTypes.number.isRequired,
-  questions: PropTypes.array.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.oneOfType([genrePropTypes, artistPropTypes])).isRequired,
 };
 
 export default App;
