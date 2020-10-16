@@ -7,6 +7,7 @@ import {GameType} from '../../const';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen';
 import Mistakes from "../mistakes/mistakes";
+import {artistPropTypes, genrePropTypes} from "../../prop-types";
 
 import withAudioPlayer from "../../hocs/with-audio-player/with-audio-player";
 
@@ -50,7 +51,7 @@ const GameScreen = (props) => {
 };
 
 GameScreen.propTypes = {
-  questions: PropTypes.array.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.oneOfType([genrePropTypes, artistPropTypes])).isRequired,
   step: PropTypes.number.isRequired,
   mistakeCount: PropTypes.number.isRequired,
   resetGame: PropTypes.func.isRequired,
@@ -58,6 +59,7 @@ GameScreen.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  questions: state.questions,
   step: state.step,
   mistakeCount: state.mistakeCount,
 });
