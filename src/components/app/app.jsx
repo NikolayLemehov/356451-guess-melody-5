@@ -30,9 +30,7 @@ const App = () => {
           <GameOverScreen/>
         </Route>
         <Route exact path="/game">
-          <GameScreen
-            errorsCount={MAX_MISTAKE_COUNT}
-          />
+          <GameScreen/>
         </Route>
       </Switch>
     </BrowserRouter>
