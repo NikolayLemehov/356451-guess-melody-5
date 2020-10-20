@@ -9,11 +9,10 @@ import GenreQuestionScreen from '../genre-question-screen/genre-question-screen'
 import Mistakes from "../mistakes/mistakes";
 import {artistPropTypes, genrePropTypes} from "../../prop-types";
 
-import withActivePlayer from "../../hocs/with-active-player/with-active-player";
-import withAudio from "../../hocs/with-audio/with-audio";
+import withAudioPlayer from "../../hocs/with-audio-player/with-audio-player";
 
-const GenreQuestionScreenWrapped = withActivePlayer(withAudio(GenreQuestionScreen));
-const ArtistQuestionScreenWrapped = withActivePlayer(ArtistQuestionScreen);
+const GenreQuestionScreenWrapped = withAudioPlayer(GenreQuestionScreen);
+const ArtistQuestionScreenWrapped = withAudioPlayer(ArtistQuestionScreen);
 
 const GameScreen = (props) => {
   const {questions, step, onUserAnswer, resetGame, mistakeCount} = props;
