@@ -1,73 +1,31 @@
-import React, {PureComponent, Fragment, createRef} from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 
+const AudioPlayer = (props) => {
+  const {onPlayButtonClick, isPlaying, id, children} = props;
 
-class AudioPlayer extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this._audioRef = createRef();
-
-    this.state = {
-      isLoading: true,
-    };
-  }
-
-  componentDidMount() {
-    const {src} = this.props;
-    const audio = this._audioRef.current;
-
-    audio.src = src;
-
-    audio.oncanplaythrough = () => this.setState({
-      isLoading: false,
-    });
-  }
-
-  componentDidUpdate() {
-    const audio = this._audioRef.current;
-
-    if (this.props.isPlaying) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-  }
-
-  componentWillUnmount() {
-    const audio = this._audioRef.current;
-
-    audio.oncanplaythrough = null;
-  }
-
-  render() {
-    const {onPlayButtonClick, isPlaying, id} = this.props;
-    const {isLoading} = this.state;
-
-    return (
-      <Fragment>
-        <button
-          className={`track__button track__button--${isPlaying ? `pause` : `play`}`}
-          type="button"
-          disabled={isLoading}
-          onClick={() => onPlayButtonClick(id)}
-        />
-        <div className="track__status">
-          <audio
-            autoPlay={isPlaying}
-            ref={this._audioRef}
-          />
-        </div>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <button
+        className={`track__button track__button--${isPlaying ? `pause` : `play`}`}
+        type="button"
+        onClick={() => onPlayButtonClick(id)}
+      />
+      <div className="track__status">
+        {children}
+      </div>
+    </Fragment>
+  );
+};
 
 AudioPlayer.propTypes = {
-  isPlaying: PropTypes.bool.isRequired,
-  src: PropTypes.string.isRequired,
   onPlayButtonClick: PropTypes.func.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
   id: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
 };
 
 export default AudioPlayer;
