@@ -1,10 +1,11 @@
 import {getIsGenreAnswerCorrect, getIsArtistAnswerCorrect} from "../game";
 import {GameType} from "../const";
 
-const ActionType = {
+export const ActionType = {
   INCREMENT_STEP: `INCREMENT_STEP`,
   RESET_GAME: `RESET_GAME`,
   INCREMENT_MISTAKE: `INCREMENT_MISTAKE`,
+  LOAD_QUESTIONS: `LOAD_QUESTIONS`,
 };
 
 export const incrementStep = () => ({
@@ -32,4 +33,7 @@ export const incrementMistake = (question, userAnswer) => {
   };
 };
 
-export {ActionType};
+export const loadQuestions = (questions) => ({
+  type: ActionType.LOAD_QUESTIONS,
+  payload: questions,
+});
