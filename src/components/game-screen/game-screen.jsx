@@ -8,7 +8,7 @@ import ArtistQuestionScreen from '../artist-question-screen/artist-question-scre
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen';
 import Mistakes from "../mistakes/mistakes";
 import {artistPropTypes, genrePropTypes} from "../../prop-types";
-import {MAX_MISTAKE_COUNT} from "../../const";
+import {MAX_MISTAKE_COUNT, AppRoute} from "../../const";
 
 import withAudioPlayer from "../../hocs/with-audio-player/with-audio-player";
 import withUserAnswer from "../../hocs/with-user-answer/with-user-answer";
@@ -22,13 +22,13 @@ const GameScreen = (props) => {
 
   if (mistakeCount >= MAX_MISTAKE_COUNT) {
     return (
-      <Redirect to="/lose" />
+      <Redirect to={AppRoute.LOSE} />
     );
   }
 
   if (step >= questions.length || !question) {
     return (
-      <Redirect to="/result" />
+      <Redirect to={AppRoute.RESULT} />
     );
   }
 
