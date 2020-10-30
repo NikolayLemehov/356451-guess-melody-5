@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from "react-redux";
-import {ActionCreator} from "../../store/action";
+import {incrementMistake, incrementStep, resetGame} from "../../store/action";
 import {GameType} from '../../const';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen';
 import Mistakes from "../mistakes/mistakes";
 import {artistPropTypes, genrePropTypes} from "../../prop-types";
-import {MAX_MISTAKE_COUNT} from "../../const";
+import {MAX_MISTAKE_COUNT, AppRoute} from "../../const";
 
 import withAudioPlayer from "../../hocs/with-audio-player/with-audio-player";
 import withUserAnswer from "../../hocs/with-user-answer/with-user-answer";
@@ -22,13 +22,13 @@ const GameScreen = (props) => {
 
   if (mistakeCount >= MAX_MISTAKE_COUNT) {
     return (
-      <Redirect to="/lose" />
+      <Redirect to={AppRoute.LOSE} />
     );
   }
 
   if (step >= questions.length || !question) {
     return (
-      <Redirect to="/result" />
+      <Redirect to={AppRoute.RESULT} />
     );
   }
 
@@ -36,6 +36,7 @@ const GameScreen = (props) => {
     case GameType.ARTIST:
       return (
         <ArtistQuestionScreenWrapped
+          key={step}
           question={question}
           onAnswer={onUserAnswer}
         >
@@ -45,6 +46,7 @@ const GameScreen = (props) => {
     case GameType.GENRE:
       return (
         <GenreQuestionScreenWrapped
+          key={step}
           question={question}
           onAnswer={onUserAnswer}
         >
@@ -64,19 +66,19 @@ GameScreen.propTypes = {
   onUserAnswer: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  questions: state.questions,
-  step: state.step,
-  mistakeCount: state.mistakeCount,
+const mapStateToProps = ({GAME, DATA}) => ({
+  questions: DATA.questions,
+  step: GAME.step,
+  mistakeCount: GAME.mistakeCount,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resetGame() {
-    dispatch(ActionCreator.resetGame());
+    dispatch(resetGame());
   },
   onUserAnswer(question, answer) {
-    dispatch(ActionCreator.incrementStep());
-    dispatch(ActionCreator.incrementMistake(question, answer));
+    dispatch(incrementStep());
+    dispatch(incrementMistake(question, answer));
   },
 });
 
