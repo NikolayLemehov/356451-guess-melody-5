@@ -1,15 +1,17 @@
 import React from 'react';
-import {Switch, Route, BrowserRouter} from "react-router-dom";
+import {Switch, Route, Router} from "react-router-dom";
 import WelcomeScreen from "../welcome-screen/welcome-screen";
+import PrivateRoute from "../private-route/private-route";
 import AuthScreen from "../auth-screen/auth-screen";
 import GameOverScreen from "../game-over-screen/game-over-screen";
 import WinScreen from "../win-screen/win-screen";
 import GameScreen from "../game-screen/game-screen";
+import browserHistory from "../../browser-history";
 import {MAX_MISTAKE_COUNT} from "../../const";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router history={browserHistory}>
       <Switch>
         <Route exact
           path="/"
@@ -20,9 +22,25 @@ const App = () => {
             />
           )}
         />
-        <Route exact path="/login">
-          <AuthScreen/>
-        </Route>
+        <Route exact
+          path="/login"
+          render={({history}) => (
+            <AuthScreen
+              onReplayButtonClick={() => history.push(`/game`)}
+            />
+          )}
+        />
+        <PrivateRoute
+          exact
+          path={`/result`}
+          render={({history}) => {
+            return (
+              <WinScreen
+                onReplayButtonClick={() => history.push(`/game`)}
+              />
+            );
+          }}
+        />
         <Route exact
           path="/result"
           render={({history}) => (
@@ -45,7 +63,7 @@ const App = () => {
           />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 
