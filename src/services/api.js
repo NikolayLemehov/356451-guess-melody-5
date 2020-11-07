@@ -1,11 +1,8 @@
 import axios from "axios";
+import {HttpCode} from "../const";
 
 const BACKEND_URL = `https://5.react.pages.academy/guess-melody`;
 const REQUEST_TIMEOUT = 5000;
-
-const HttpCode = {
-  UNAUTHORIZED: 401
-};
 
 export const createAPI = (onUnauthorized) => {
   const api = axios.create({
@@ -22,6 +19,7 @@ export const createAPI = (onUnauthorized) => {
     if (response) {
       if (response.status === HttpCode.UNAUTHORIZED) {
         onUnauthorized();
+        return response;
       } else {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
@@ -30,7 +28,7 @@ export const createAPI = (onUnauthorized) => {
     } else {
       throw new Error(
           `Error message: ${err.message}.
-        Error config: ${err.config}`
+          Error config: ${err.config}`
       );
     }
   };

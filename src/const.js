@@ -22,3 +22,7 @@ export const APIRoute = {
   QUESTIONS: `/questions`,
   LOGIN: `/login`,
 };
+
+export const HttpCode = {
+  UNAUTHORIZED: 401
+};

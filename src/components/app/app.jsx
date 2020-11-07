@@ -42,14 +42,6 @@ const App = () => {
           }}
         />
         <Route exact
-          path={AppRoute.RESULT}
-          render={({history}) => (
-            <WinScreen
-              onReplayButtonClick={() => history.push(AppRoute.GAME)}
-            />
-          )}
-        />
-        <Route exact
           path={AppRoute.LOSE}
           render={({history}) => (
             <GameOverScreen
