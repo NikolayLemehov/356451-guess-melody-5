@@ -9,7 +9,7 @@ const initialState = {
 const gameProcess = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.INCREMENT_STEP:
-      let nextStep = state.step + action.payload;
+      const nextStep = state.step + action.payload;
 
       return extend(state, {
         step: nextStep,

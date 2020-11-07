@@ -9,8 +9,9 @@ import App from './components/app/app';
 import {rootReducer} from "./store/reducers/root-reducer";
 import {requireAuthorization} from "./store/action";
 import {fetchQuestionList, checkAuth} from "./store/api-actions";
-import {AuthorizationStatus} from "./const";
+import {AuthorizationStatus, HttpCode} from "./const";
 import {redirect} from "./store/middlewares/redirect";
+import swal from "sweetalert";
 
 const api = createAPI(
     () => store.dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH))
@@ -24,15 +25,32 @@ const store = createStore(
     )
 );
 
+const getErrorsString = (...responses) => responses.reduce((acc, it) => {
+  if (it.type || it.status === HttpCode.UNAUTHORIZED) {
+    return `${acc}`;
+  } else {
+    return acc ? `${acc}; ${it}` : `${it}`;
+  }
+}, ``);
+
 Promise.all([
   store.dispatch(fetchQuestionList()),
   store.dispatch(checkAuth()),
 ])
-  .then(() => {
-    ReactDOM.render(
-        <Provider store={store}>
-          <App />
-        </Provider>,
-        document.querySelector(`#root`)
-    );
+  .then((response) => {
+    const errorString = getErrorsString(...response);
+    if (!errorString) {
+      ReactDOM.render(
+          <Provider store={store}>
+            <App />
+          </Provider>,
+          document.querySelector(`#root`)
+      );
+    } else {
+      swal(`Error`, `${errorString}`, `error`);
+    }
+  })
+  .catch((err) => {
+    swal(`Error`, err, `error`);
   });
+
