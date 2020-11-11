@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from "react-redux";
-import {incrementMistake, incrementStep, resetGame} from "../../store/action";
+import {incrementMistake, incrementStep} from "../../store/action";
 import {GameType} from '../../const';
 import ArtistQuestionScreen from '../artist-question-screen/artist-question-screen';
 import GenreQuestionScreen from '../genre-question-screen/genre-question-screen';
@@ -17,7 +17,7 @@ const GenreQuestionScreenWrapped = withAudioPlayer(withUserAnswer(GenreQuestionS
 const ArtistQuestionScreenWrapped = withAudioPlayer(ArtistQuestionScreen);
 
 const GameScreen = (props) => {
-  const {questions, step, onUserAnswer, mistakeCount} = props;
+  const {questions, step, mistakeCount, onUserAnswer} = props;
   const question = questions[step];
 
   if (mistakeCount >= MAX_MISTAKE_COUNT) {
@@ -62,7 +62,6 @@ GameScreen.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.oneOfType([genrePropTypes, artistPropTypes])).isRequired,
   step: PropTypes.number.isRequired,
   mistakeCount: PropTypes.number.isRequired,
-  resetGame: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
 };
 
@@ -73,9 +72,6 @@ const mapStateToProps = ({GAME, DATA}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetGame() {
-    dispatch(resetGame());
-  },
   onUserAnswer(question, answer) {
     dispatch(incrementStep());
     dispatch(incrementMistake(question, answer));
