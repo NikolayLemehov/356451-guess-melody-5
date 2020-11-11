@@ -17,7 +17,7 @@ const gameProcess = (state = initialState, action) => {
 
     case ActionType.INCREMENT_MISTAKE:
       return extend(state, {
-        mistakes: state.mistakeCount + action.payload,
+        mistakeCount: state.mistakeCount + action.payload,
       });
 
     case ActionType.RESET_GAME:
