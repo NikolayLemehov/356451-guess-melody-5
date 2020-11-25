@@ -1,52 +1,33 @@
-import React, {PureComponent} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {GameType} from "../../const";
 
 
 const withUserAnswer = (Component) => {
-  class WithUserAnswer extends PureComponent {
-    constructor(props) {
-      super(props);
+  const WithUserAnswer = (props) => {
+    const {onAnswer, question} = props;
+    const [answers, setAnswers] = useState(new Array(props.question.answers.length).fill(false));
 
-      this.state = {
-        answers: new Array(props.question.answers.length).fill(false),
-      };
-
-      this.handleAnswer = this.handleAnswer.bind(this);
-      this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleAnswer() {
-      const {onAnswer, question} = this.props;
-      const {answers} = this.state;
-
+    const handleAnswer = () => {
       onAnswer(question, answers);
-    }
+    };
 
-    handleChange(value, i) {
-      const {answers} = this.state;
-
+    const handleChange = (value, i) => {
       const userAnswers = answers.slice(0);
       userAnswers[i] = value;
 
-      this.setState({
-        answers: userAnswers,
-      });
-    }
+      setAnswers(userAnswers);
+    };
 
-    render() {
-      const {answers} = this.state;
-
-      return (
-        <Component
-          {...this.props}
-          userAnswers={answers}
-          onAnswer={this.handleAnswer}
-          onChange={this.handleChange}
-        />
-      );
-    }
-  }
+    return (
+      <Component
+        {...props}
+        userAnswers={answers}
+        onAnswer={handleAnswer}
+        onChange={handleChange}
+      />
+    );
+  };
 
   WithUserAnswer.propTypes = {
     question: PropTypes.shape({
@@ -59,7 +40,6 @@ const withUserAnswer = (Component) => {
     }).isRequired,
     onAnswer: PropTypes.func.isRequired,
   };
-
 
   return WithUserAnswer;
 };
